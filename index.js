@@ -7,12 +7,22 @@ client.on('ready', () => {
     console.log(`Entrei Como: ${client.user.tag}`);
   });
 
-  /////////////////////////////////////////////
-  client.on('message', msg => {
-    if (msg.content === 't!ping') {
-      msg.reply('Pong!');
-    }
-  });
+/// Pasta De Comandos ///
+client.on('message', message =>{
+  if (message.author.bot) return;
+  if (message.channel.type == 'dm') return;
+  
+  const args = message.content.slice(config.prefix.length).trim().split(/ +/g)
+  const command = args.shift().toLocaleLowerCase();
+  try {
+    const commandFile = require(`./commands/${command}.js`)
+
+    commandFile.run(client, message, args)
+  } catch (err) {
+    console.log(`Erro: ${err}`)
+  }
+
+})
 
 
 client.login(config.token)
