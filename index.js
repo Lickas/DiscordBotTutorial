@@ -11,7 +11,11 @@ client.on('ready', () => {
 client.on('message', message =>{
   if (message.author.bot) return;
   if (message.channel.type == 'dm') return;
+  if (!message.content.toLowerCase().startsWith(config.prefix.toLowerCase())) return;
+  if (message.content.startsWith(`<@!${client.user.id}>`) || message.content.startsWith(`<@${client.user.id}>`)) return;
   
+
+
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g)
   const command = args.shift().toLocaleLowerCase();
   try {
